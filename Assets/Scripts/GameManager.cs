@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
 
     private int score;
     private int hiScore;  // scores for calculation
+
+    private Vector3 indicatorScale;
+
     private void Awake()
     {
         score = 0;
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
         isGameOVer = false;
         currentColor = "white";
         indicatorSprite.color = Color.white;
+        indicatorScale = indicatorSprite.transform.localScale;
     }
     
 
@@ -78,13 +82,13 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator IndicatorPulse(Transform t)
     {
-        Vector3 originalScale = t.localScale;
-        Vector3 targetScale = originalScale * 2;
+        
+        Vector3 targetScale = indicatorScale * 2;
 
         float timer = 0f;
         while (timer < 0.2f)
         {
-            t.localScale = Vector3.Lerp(originalScale, targetScale, timer / 0.2f);
+            t.localScale = Vector3.Lerp(indicatorScale, targetScale, timer / 0.2f);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -92,11 +96,11 @@ public class GameManager : MonoBehaviour
         timer = 0f;
         while (timer < 0.5f)
         {
-            t.localScale = Vector3.Lerp(targetScale, originalScale, timer / 0.5f);
+            t.localScale = Vector3.Lerp(targetScale, indicatorScale, timer / 0.5f);
             timer += Time.deltaTime;
             yield return null;
         }
-        t.localScale = originalScale;
+        t.localScale = indicatorScale;
     }
     /// <summary>
     /// Switch Start reset function applied on same button
